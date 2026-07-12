@@ -59,12 +59,12 @@ def health() -> dict:
 
 
 @app.post("/triage")
-def triage(req: TriageRequest) -> dict:
+async def triage(req: TriageRequest) -> dict:
     graph = get_graph()
     thread_id = str(uuid.uuid4())
     ticket_id = req.ticket_id or f"T-{thread_id[:8]}"
 
-    result = graph.invoke(
+    result = await graph.ainvoke(
         {"ticket_text": req.ticket_text, "ticket_id": ticket_id},
         config=_config(thread_id),
     )
@@ -92,7 +92,7 @@ def triage(req: TriageRequest) -> dict:
 
 
 @app.post("/resume")
-def resume(req: ResumeRequest) -> dict:
+async def resume(req: ResumeRequest) -> dict:
     decision = req.decision.strip().lower()
     if decision not in ("approve", "reject"):
         raise HTTPException(status_code=400, detail="decision must be 'approve' or 'reject'")
@@ -101,13 +101,13 @@ def resume(req: ResumeRequest) -> dict:
     config = _config(req.thread_id)
 
     # Guard: the thread must exist and actually be waiting on an interrupt.
-    snapshot = graph.get_state(config)
+    snapshot = await graph.aget_state(config)
     if not snapshot.created_at:
         raise HTTPException(status_code=404, detail="unknown thread_id")
     if not snapshot.next:
         raise HTTPException(status_code=409, detail="run already completed; nothing to resume")
 
-    result = graph.invoke(Command(resume=decision), config=config)
+    result = await graph.ainvoke(Command(resume=decision), config=config)
 
     return {
         "thread_id": req.thread_id,

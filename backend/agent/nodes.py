@@ -1,18 +1,20 @@
 """LangGraph node implementations for the support triage agent.
 
-Step 1: the tool-gathering step (`resolve_via_tools`) and the action executor
-(`apply_decision`) use inline stubs. Step 2 replaces the stubs with real MCP
-tool-server calls (ticket_lookup, knowledge_base_search, send_email).
+Step 2: `resolve_via_tools` and `apply_decision` now call the real MCP tool
+servers (ticket_lookup, knowledge_base_search, send_email) via the MCP client.
+Nodes are async so they can await MCP tool calls and the LLM.
 """
 from __future__ import annotations
 
+import json
 import logging
-from typing import Literal
+from typing import Any, Literal
 
 from langchain_anthropic import ChatAnthropic
 from langgraph.types import interrupt
 from pydantic import BaseModel, Field
 
+from .mcp_client import call_tool
 from .state import TriageState
 
 logger = logging.getLogger("triage.nodes")
@@ -36,12 +38,30 @@ class Classification(BaseModel):
 
 
 def _classifier_llm() -> ChatAnthropic:
-    # Instantiated lazily so importing this module never requires an API key
-    # (keeps `import`-time side effects out; key is only needed at call time).
+    # Instantiated lazily so importing this module never requires an API key.
     return ChatAnthropic(model=CLASSIFIER_MODEL, temperature=0)
 
 
-def classify_ticket(state: TriageState) -> dict:
+def _parse(result: Any) -> Any:
+    """Normalize an MCP tool result to a Python object.
+
+    langchain-mcp-adapters may return a dict, a JSON string, or a list of
+    content blocks like [{"type": "text", "text": "<json>"}]. Unwrap all three.
+    """
+    if isinstance(result, dict):
+        return result
+    if isinstance(result, list):
+        texts = [b.get("text", "") for b in result if isinstance(b, dict) and b.get("type") == "text"]
+        result = texts[0] if texts else (result[0] if result else "")
+    if isinstance(result, str):
+        try:
+            return json.loads(result)
+        except (ValueError, TypeError):
+            return result
+    return result
+
+
+async def classify_ticket(state: TriageState) -> dict:
     """Single LLM call: classify the ticket as simple or ambiguous."""
     ticket_text = state["ticket_text"]
     llm = _classifier_llm().with_structured_output(Classification)
@@ -50,55 +70,43 @@ def classify_ticket(state: TriageState) -> dict:
         "ticket.\n\nTicket:\n"
         f"{ticket_text}"
     )
-    result: Classification = llm.invoke(prompt)
+    result: Classification = await llm.ainvoke(prompt)
     logger.info("classify_ticket -> %s: %s", result.category, result.reasoning)
     return {"category": result.category, "reasoning": result.reasoning}
 
 
-def resolve_via_tools(state: TriageState) -> dict:
-    """Simple tickets: gather info via tools and produce a resolution action.
-
-    Step 1 STUB: returns canned info instead of calling MCP servers. The shape
-    mirrors what the real MCP tools will return in Step 2.
-    """
+async def resolve_via_tools(state: TriageState) -> dict:
+    """Simple tickets: gather info via MCP tools and propose a resolution."""
     ticket_id = state.get("ticket_id", "UNKNOWN")
 
-    # --- stubbed tool calls (replaced by MCP in Step 2) ---
+    ticket = _parse(await call_tool("ticket_lookup", {"ticket_id": ticket_id}))
+    kb = _parse(await call_tool("knowledge_base_search", {"query": state["ticket_text"]}))
+
     gathered_info = [
-        {
-            "tool": "ticket_lookup",
-            "result": {
-                "ticket_id": ticket_id,
-                "status": "open",
-                "customer": "demo@example.com",
-                "product": "WidgetPro",
-            },
-        },
-        {
-            "tool": "knowledge_base_search",
-            "result": {
-                "query": state["ticket_text"][:60],
-                "snippets": ["[STUB] Follow the standard KB steps to resolve."],
-            },
-        },
+        {"tool": "ticket_lookup", "result": ticket},
+        {"tool": "knowledge_base_search", "result": kb},
     ]
+
+    customer = ticket.get("customer", "demo@example.com") if isinstance(ticket, dict) else "demo@example.com"
+    snippets = kb.get("snippets", []) if isinstance(kb, dict) else []
+    kb_body = snippets[0]["body"] if snippets else "Please see our knowledge base."
 
     resolution = {
         "action": "send_response",
-        "to": "demo@example.com",
+        "to": customer,
         "subject": f"Re: ticket {ticket_id}",
-        "body": "[STUB auto-resolution] Based on our knowledge base, here are the steps...",
+        "body": f"Thanks for reaching out. {kb_body}",
         "auto_resolved": True,
     }
-    logger.info("resolve_via_tools -> proposed action=%s", resolution["action"])
+    logger.info("resolve_via_tools -> proposed action=%s to=%s", resolution["action"], customer)
     return {"gathered_info": gathered_info, "resolution": resolution}
 
 
-def human_approval(state: TriageState) -> dict:
+async def human_approval(state: TriageState) -> dict:
     """Ambiguous tickets: pause for a human approve/reject decision.
 
-    `interrupt()` checkpoints the graph and suspends until the graph is resumed
-    with a value (via Command(resume=...)). The value is the human's decision.
+    `interrupt()` checkpoints the graph and suspends until it is resumed with a
+    value (via Command(resume=...)). That value is the human's decision.
     """
     payload = {
         "ticket_id": state.get("ticket_id", "UNKNOWN"),
@@ -116,34 +124,38 @@ def human_approval(state: TriageState) -> dict:
     return {"human_decision": decision}
 
 
-def apply_decision(state: TriageState) -> dict:
-    """Execute the final action based on auto-resolution or human decision.
-
-    Step 1 STUB: the actual side effect (send_email) is mocked in Step 2 via the
-    send_email MCP tool. Here we just record what would happen.
-    """
+async def apply_decision(state: TriageState) -> dict:
+    """Execute the final action; sending a response calls the send_email MCP tool."""
     category = state.get("category")
 
     if category == "simple":
-        action = {
-            "type": state["resolution"]["action"],  # e.g. send_response
-            "detail": "Auto-resolved simple ticket.",
-            "resolution": state["resolution"],
-        }
+        resolution = state["resolution"]
+        email = _parse(
+            await call_tool(
+                "send_email",
+                {"to": resolution["to"], "subject": resolution["subject"], "body": resolution["body"]},
+            )
+        )
+        action = {"type": resolution["action"], "detail": "Auto-resolved simple ticket.", "email": email}
         status = "resolved"
     else:
         decision = state.get("human_decision", "reject")
         if decision == "approve":
-            action = {
-                "type": "send_response",
-                "detail": "Human approved auto-resolution.",
-            }
+            ticket_id = state.get("ticket_id", "UNKNOWN")
+            email = _parse(
+                await call_tool(
+                    "send_email",
+                    {
+                        "to": "demo@example.com",
+                        "subject": f"Re: ticket {ticket_id}",
+                        "body": "A support agent has approved handling your request.",
+                    },
+                )
+            )
+            action = {"type": "send_response", "detail": "Human approved auto-resolution.", "email": email}
             status = "resolved"
         else:
-            action = {
-                "type": "escalate",
-                "detail": "Human rejected; escalated to a human agent.",
-            }
+            action = {"type": "escalate", "detail": "Human rejected; escalated to a human agent."}
             status = "escalated"
 
     logger.info("apply_decision -> status=%s action=%s", status, action["type"])
