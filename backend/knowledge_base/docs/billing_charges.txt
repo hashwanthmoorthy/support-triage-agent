@@ -1,0 +1,11 @@
+Title: Understanding your billing and charges
+
+Your subscription renews automatically on the same day each month or year,
+depending on the plan you chose. The charge appears on your statement as
+"WIDGETPRO SUBSCRIPTION". You can view every past invoice under Billing >
+Invoices in your account.
+
+If you see an unexpected charge, first check whether a free trial recently
+ended, since the first paid charge lands the day after the trial. To update the
+card we bill, go to Billing > Payment methods. Failed payments are retried for
+up to 7 days before the subscription is paused.

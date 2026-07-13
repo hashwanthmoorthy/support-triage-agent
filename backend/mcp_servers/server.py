@@ -19,6 +19,8 @@ import os
 
 from mcp.server.fastmcp import FastMCP
 
+from knowledge_base.retriever import search as kb_search
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("triage.mcp")
 
@@ -34,12 +36,6 @@ _FAKE_TICKETS = {
 }
 _DEFAULT_TICKET = {"status": "open", "customer": "demo@example.com", "product": "WidgetPro", "priority": "normal"}
 
-_KB = [
-    {"title": "Reset your password", "body": "Go to Settings > Security > Reset password and follow the email link."},
-    {"title": "Update billing info", "body": "Open Billing > Payment methods to add or change a card."},
-    {"title": "Cancel a subscription", "body": "Subscriptions are cancelled from Billing > Plan > Cancel."},
-]
-
 
 @mcp.tool()
 def ticket_lookup(ticket_id: str) -> dict:
@@ -51,10 +47,16 @@ def ticket_lookup(ticket_id: str) -> dict:
 
 @mcp.tool()
 def knowledge_base_search(query: str) -> dict:
-    """Search the knowledge base. Returns up to 2 matching snippets."""
-    q = (query or "").lower()
-    scored = [kb for kb in _KB if any(w in (kb["title"] + kb["body"]).lower() for w in q.split())]
-    snippets = (scored or _KB)[:2]
+    """Semantic search over the knowledge base via local embeddings (RAG).
+
+    Returns the top matching chunks. Each snippet keeps the {title, body} shape
+    (title = source doc), plus a `source` filename and similarity `distance`.
+    """
+    hits = kb_search(query, k=3)
+    snippets = [
+        {"title": h["source"], "body": h["text"], "source": h["source"], "distance": h["distance"]}
+        for h in hits
+    ]
     logger.info("knowledge_base_search(%r) -> %d snippet(s)", query, len(snippets))
     return {"query": query, "snippets": snippets}
 

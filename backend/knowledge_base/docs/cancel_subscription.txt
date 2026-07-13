@@ -1,0 +1,11 @@
+Title: Cancelling your subscription
+
+You can cancel your subscription at any time from Billing > Plan > Cancel
+subscription. Cancellation stops all future charges but keeps your account
+active until the end of the current billing period, so you do not lose access
+you already paid for.
+
+Cancelling is different from deleting your account. Cancelling only ends the
+paid plan and moves you to the free tier. If you want your account and personal
+data removed entirely, see the account deletion policy. Cancellations take
+effect immediately and you will receive a confirmation email.

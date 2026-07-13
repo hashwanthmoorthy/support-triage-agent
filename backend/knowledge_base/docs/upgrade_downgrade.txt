@@ -1,0 +1,10 @@
+Title: Upgrading or downgrading your plan
+
+You can change plans at any time from Billing > Plan. When you upgrade, the new
+features unlock immediately and we charge a prorated amount for the rest of the
+current billing period, so you only pay for the days you use.
+
+When you downgrade, the change takes effect at the start of your next billing
+period so you keep the higher-tier features you already paid for until then. We
+do not issue partial refunds for downgrades, but the lower price applies to
+every cycle after the switch. Your data is preserved across plan changes.

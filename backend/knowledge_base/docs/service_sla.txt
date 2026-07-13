@@ -1,0 +1,11 @@
+Title: Service uptime and support response times
+
+WidgetPro targets 99.9% monthly uptime for all paid plans. Current and
+historical uptime is published on our public status page, where you can also
+subscribe to incident notifications by email.
+
+Support response times depend on your plan. Free-tier users receive a response
+within 2 business days. Pro-plan users receive priority support with a target
+first response within 4 business hours. Critical outages affecting many
+customers are worked on immediately, regardless of plan, until service is
+restored.

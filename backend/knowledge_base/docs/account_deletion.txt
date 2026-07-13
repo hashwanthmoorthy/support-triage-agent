@@ -1,0 +1,11 @@
+Title: Deleting your account and data
+
+Deleting your account is permanent and cannot be undone. It removes your
+profile, saved settings, and all content you created. Before you can delete,
+any active paid subscription must be cancelled first.
+
+To delete, go to Settings > Account > Delete account and confirm with your
+password. We fully erase your personal data within 30 days, except records we
+are legally required to retain for tax or fraud-prevention purposes. Because
+deletion is irreversible, requests that combine deletion with a refund are
+reviewed by a support agent before anything is removed.

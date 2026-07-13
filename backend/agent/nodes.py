@@ -42,6 +42,14 @@ def _classifier_llm() -> ChatAnthropic:
     return ChatAnthropic(model=CLASSIFIER_MODEL, temperature=0)
 
 
+def _strip_title(text: str) -> str:
+    """Drop a leading 'Title: ...' line so it doesn't leak into responses."""
+    lines = text.split("\n")
+    if lines and lines[0].lower().startswith("title:"):
+        lines = lines[1:]
+    return "\n".join(lines).strip()
+
+
 def _parse(result: Any) -> Any:
     """Normalize an MCP tool result to a Python object.
 
@@ -89,7 +97,7 @@ async def resolve_via_tools(state: TriageState) -> dict:
 
     customer = ticket.get("customer", "demo@example.com") if isinstance(ticket, dict) else "demo@example.com"
     snippets = kb.get("snippets", []) if isinstance(kb, dict) else []
-    kb_body = snippets[0]["body"] if snippets else "Please see our knowledge base."
+    kb_body = _strip_title(snippets[0]["body"]) if snippets else "Please see our knowledge base."
 
     resolution = {
         "action": "send_response",

@@ -19,3 +19,6 @@ frontend/dist/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Generated vector store (docs are committed, the index is rebuilt)
+backend/knowledge_base/chroma_db/

@@ -1,0 +1,11 @@
+Title: Trouble signing in
+
+If you cannot sign in but your password is correct, your account may be
+temporarily locked after several failed attempts. Locks clear automatically
+after 15 minutes. Waiting and trying again often resolves the problem.
+
+Other common causes are an expired session, a browser blocking cookies, or a
+saved autofill password that is out of date. Try clearing your browser cache,
+disabling extensions, or using a private window. If two-factor authentication
+codes are being rejected, check that your device clock is set to automatic, as a
+wrong clock makes time-based codes invalid.

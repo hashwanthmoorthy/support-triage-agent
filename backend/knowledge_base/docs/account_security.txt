@@ -1,0 +1,11 @@
+Title: Keeping your account secure
+
+We strongly recommend turning on two-factor authentication (2FA) under Settings >
+Security. With 2FA enabled, signing in requires both your password and a code
+from your authenticator app, so a stolen password alone cannot unlock your
+account.
+
+If you think your account has been accessed by someone else, change your
+password immediately and sign out of all other sessions from Settings >
+Security > Active sessions. We will never ask for your password or 2FA codes by
+email or phone, so treat any such request as a phishing attempt and report it.
