@@ -1,0 +1,11 @@
+# Keep the build context small and force a fresh model/index bake in-image.
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+# Generated locally; rebuilt inside the image at build time.
+knowledge_base/chroma_db/
+hf_cache/
+# Never bake secrets.
+.env

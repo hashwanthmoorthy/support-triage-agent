@@ -9,3 +9,6 @@ mcp==1.28.1
 langchain-mcp-adapters==0.3.0
 chromadb==1.5.9
 sentence-transformers==5.6.0
+# Pulled in by sentence-transformers; pinned for reproducibility. The backend
+# Dockerfile installs the CPU-only wheel from the PyTorch index to stay small.
+torch==2.13.0
