@@ -6,17 +6,25 @@ Endpoints:
     POST /resume   -> resume a paused (interrupted) run with approve/reject
 
 Load order matters: `.env` is loaded before importing the graph so that
-LangSmith tracing env vars (wired in Step 3) take effect, and so the
-ANTHROPIC_API_KEY is present when the classifier LLM is first used.
+LangSmith tracing env vars take effect, and so the ANTHROPIC_API_KEY is present
+when the classifier LLM is first used.
+
+LangSmith tracing is enabled purely via env vars (no custom code):
+LANGCHAIN_TRACING_V2=true, LANGCHAIN_API_KEY, LANGCHAIN_PROJECT. langsmith
+honors both the LANGSMITH_* and LANGCHAIN_* namespaces, so the spec's
+LANGCHAIN_* names work as-is.
 """
 from __future__ import annotations
 
 import logging
 import uuid
+from pathlib import Path
 
 from dotenv import load_dotenv
 
-load_dotenv()  # noqa: E402 -- must run before graph/LLM imports
+# Explicitly load the repo-root .env regardless of the current working directory
+# (uvicorn may be launched from anywhere). Must run before graph/LLM imports.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")  # noqa: E402
 
 from fastapi import FastAPI, HTTPException  # noqa: E402
 from langgraph.types import Command  # noqa: E402
