@@ -26,7 +26,10 @@ from dotenv import load_dotenv
 # (uvicorn may be launched from anywhere). Must run before graph/LLM imports.
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")  # noqa: E402
 
+import os  # noqa: E402
+
 from fastapi import FastAPI, HTTPException  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 from langgraph.types import Command  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 
@@ -35,6 +38,17 @@ from agent.graph import get_graph  # noqa: E402
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="Support Triage Agent", version="0.1.0")
+
+# CORS for the frontend (demo: no auth). Override origins via CORS_ORIGINS
+# (comma-separated); defaults cover the Vite dev server.
+_default_origins = "http://localhost:5173,http://127.0.0.1:5173"
+_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", _default_origins).split(",") if o.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class TriageRequest(BaseModel):
