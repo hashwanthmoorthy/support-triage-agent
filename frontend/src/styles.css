@@ -23,7 +23,9 @@ body {
 .wrap { max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; }
 
 header h1 { margin: 0 0 4px; font-size: 24px; }
-.sub { color: var(--muted); margin: 0 0 24px; }
+.sub { color: var(--muted); margin: 0 0 4px; }
+.tagline { color: var(--accent); font-size: 13px; margin: 0 0 24px; opacity: 0.85; }
+.foot { color: var(--muted); font-size: 12px; text-align: center; margin-top: 28px; }
 
 .card {
   background: var(--card);

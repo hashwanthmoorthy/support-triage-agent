@@ -59,6 +59,7 @@ export default function App() {
       <header>
         <h1>Support Triage Agent</h1>
         <p className="sub">Classify a ticket → auto-resolve simple ones, pause ambiguous ones for approval.</p>
+        <p className="tagline">Powered by Claude + LangGraph · RAG knowledge base · human-in-the-loop</p>
       </header>
 
       <form onSubmit={onSubmit} className="card">
@@ -138,6 +139,8 @@ export default function App() {
           )}
         </div>
       )}
+
+      <footer className="foot">🚀 Auto-deployed to AWS EC2 via GitHub Actions</footer>
     </div>
   )
 }
