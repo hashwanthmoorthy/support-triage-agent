@@ -1,0 +1,63 @@
+name: Deploy to EC2
+
+# Automates the manual deploy: SSH into the instance, write .env from secrets,
+# git pull, and rebuild the Docker Compose stack.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Never run two deploys at once (a build is in flight for several minutes).
+concurrency:
+  group: deploy-ec2
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          # Pass secrets as remote env vars (not interpolated into the script text).
+          envs: ANTHROPIC_API_KEY,LANGCHAIN_API_KEY,EC2_HOST
+          command_timeout: "20m"
+          script: |
+            set -euo pipefail
+            cd /home/ubuntu/app
+
+            git pull origin main
+
+            # Rewrite .env from secrets so deploys are reproducible. The frontend
+            # URL and CORS origin are derived from the instance host. VITE_API_BASE
+            # is baked into the frontend at build time, so it must be set here.
+            cat > .env <<EOF
+            ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+            LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+            LANGCHAIN_TRACING_V2=true
+            LANGCHAIN_PROJECT=support-triage-agent
+            VITE_API_BASE=http://${EC2_HOST}:8000
+            CORS_ORIGINS=http://${EC2_HOST}:5173
+            EOF
+
+            docker compose down
+            docker compose up -d --build
+            docker image prune -f
+
+            # Wait for the backend healthcheck to pass before declaring success.
+            for i in $(seq 1 30); do
+              if curl -fs http://localhost:8000/health >/dev/null; then
+                echo "backend healthy"; break
+              fi
+              if [ "$i" = "30" ]; then echo "backend did not become healthy"; docker compose ps; exit 1; fi
+              sleep 5
+            done
+
+            docker compose ps
