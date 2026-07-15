@@ -85,6 +85,7 @@ button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .badge.ambiguous, .badge.pending { background: rgba(210,153,34,0.15); color: var(--amber); }
 .badge.resolved { background: rgba(63,185,80,0.15); color: var(--green); }
 .badge.escalated { background: rgba(248,81,73,0.15); color: var(--red); }
+.badge.invalid { background: rgba(139,144,160,0.18); color: var(--muted); }
 
 .reasoning { padding: 12px 0; border-bottom: 1px solid var(--border); }
 .reasoning p { margin: 6px 0 0; }

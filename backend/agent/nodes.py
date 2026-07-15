@@ -26,12 +26,15 @@ CLASSIFIER_MODEL = "claude-haiku-4-5-20251001"
 class Classification(BaseModel):
     """Structured output for the classify_ticket node."""
 
-    category: Literal["simple", "ambiguous"] = Field(
+    category: Literal["simple", "ambiguous", "invalid"] = Field(
         description=(
             "'simple' if the ticket can be safely resolved automatically with "
             "known tools/knowledge-base answers (password resets, status checks, "
-            "FAQ-style questions). 'ambiguous' if it needs human judgment "
-            "(refunds, account changes, complaints, anything risky or unclear)."
+            "FAQ-style questions). 'ambiguous' if it is a genuine support request "
+            "that needs human judgment (refunds, account changes, complaints, "
+            "anything risky or unclear). 'invalid' if it is NOT a genuine customer "
+            "support request at all — e.g. greetings, small talk, questions about "
+            "you/the assistant, spam, gibberish, or off-topic messages."
         )
     )
     reasoning: str = Field(description="One or two sentences explaining the choice.")
@@ -108,6 +111,29 @@ async def resolve_via_tools(state: TriageState) -> dict:
     }
     logger.info("resolve_via_tools -> proposed action=%s to=%s", resolution["action"], customer)
     return {"gathered_info": gathered_info, "resolution": resolution}
+
+
+async def reject_invalid(state: TriageState) -> dict:
+    """Non-support input: return a clarification prompt.
+
+    Deliberately makes NO MCP tool calls and NO RAG retrieval — invalid input
+    should never touch ticket_lookup / knowledge_base_search / send_email.
+    """
+    resolution = {
+        "action": "request_clarification",
+        "body": (
+            "This doesn't look like a support request. Please describe your "
+            "support issue (for example: account access, billing, or a problem "
+            "with the product) and we'll help."
+        ),
+        "auto_resolved": False,
+    }
+    logger.info("reject_invalid -> requesting clarification (no tools/RAG)")
+    return {
+        "resolution": resolution,
+        "final_action": {"type": "request_clarification", "detail": "Not a valid support request."},
+        "status": "invalid",
+    }
 
 
 async def human_approval(state: TriageState) -> dict:

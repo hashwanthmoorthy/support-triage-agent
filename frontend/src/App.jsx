@@ -13,6 +13,7 @@ function Badge({ value }) {
     : value === 'resolved' ? 'badge resolved'
     : value === 'escalated' ? 'badge escalated'
     : value === 'pending_approval' ? 'badge pending'
+    : value === 'invalid' ? 'badge invalid'
     : 'badge'
   return <span className={cls}>{value}</span>
 }

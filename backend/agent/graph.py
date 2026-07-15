@@ -16,13 +16,24 @@ from functools import lru_cache
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 
-from .nodes import apply_decision, classify_ticket, human_approval, resolve_via_tools
+from .nodes import (
+    apply_decision,
+    classify_ticket,
+    human_approval,
+    reject_invalid,
+    resolve_via_tools,
+)
 from .state import TriageState
 
 
 def _route_after_classify(state: TriageState) -> str:
     """Conditional edge: pick the branch based on the classification."""
-    return "resolve_via_tools" if state.get("category") == "simple" else "human_approval"
+    category = state.get("category")
+    if category == "invalid":
+        return "reject_invalid"
+    if category == "simple":
+        return "resolve_via_tools"
+    return "human_approval"
 
 
 def build_graph():
@@ -32,6 +43,7 @@ def build_graph():
     builder.add_node("classify_ticket", classify_ticket)
     builder.add_node("resolve_via_tools", resolve_via_tools)
     builder.add_node("human_approval", human_approval)
+    builder.add_node("reject_invalid", reject_invalid)
     builder.add_node("apply_decision", apply_decision)
 
     builder.add_edge(START, "classify_ticket")
@@ -41,10 +53,13 @@ def build_graph():
         {
             "resolve_via_tools": "resolve_via_tools",
             "human_approval": "human_approval",
+            "reject_invalid": "reject_invalid",
         },
     )
     builder.add_edge("resolve_via_tools", "apply_decision")
     builder.add_edge("human_approval", "apply_decision")
+    # invalid input terminates immediately — no apply_decision, no tools.
+    builder.add_edge("reject_invalid", END)
     builder.add_edge("apply_decision", END)
 
     return builder.compile(checkpointer=MemorySaver())

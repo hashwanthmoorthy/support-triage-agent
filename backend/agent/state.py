@@ -15,7 +15,7 @@ class TriageState(TypedDict, total=False):
     ticket_text: str
 
     # --- classify_ticket output ---
-    category: Literal["simple", "ambiguous"]
+    category: Literal["simple", "ambiguous", "invalid"]
     reasoning: str
 
     # --- resolve_via_tools output (Step 1: stubbed; Step 2: real MCP tools) ---
