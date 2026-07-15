@@ -19,10 +19,15 @@ from knowledge_base.retriever import search  # noqa: E402
 
 # (query, expected top-ranked source doc)
 CASES = [
-    ("how do I reset my password, I'm locked out", "password_reset.txt"),
-    ("can I get my money back for my subscription", "refund_policy.txt"),
-    ("how long does shipping take to arrive", "shipping_delivery.txt"),
-    ("I want to permanently delete my account and data", "account_deletion.txt"),
+    ("how do I turn on two-factor authentication", "account_security.txt"),
+    ("I got an email about a login from a new device I don't recognize", "account_security.txt"),
+    ("the app keeps crashing every time I open it", "technical_troubleshooting.txt"),
+    ("if I upgrade my plan will I be charged right away", "upgrade_downgrade.txt"),
+    ("my international order is stuck in customs and hasn't arrived", "shipping_delivery.txt"),
+    ("I was billed twice this month, can I get the extra charge back", "refund_policy.txt"),
+    ("how do I download a copy of all my data", "data_privacy.txt"),
+    ("does cancelling my subscription also delete my account", "cancel_subscription.txt"),
+    ("my 2FA code keeps getting rejected when I sign in", "login_troubleshooting.txt"),
 ]
 
 

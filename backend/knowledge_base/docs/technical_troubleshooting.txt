@@ -1,0 +1,27 @@
+Title: Technical troubleshooting: app crashes, freezes, and performance
+
+If the WidgetPro app crashes on launch, freezes, or runs slowly, most issues are
+fixed by a few standard steps before anything else is needed. First, fully close
+and reopen the app — not just minimize it — so it starts a fresh session. If it
+still misbehaves, restart your device to clear memory and background processes
+that can interfere.
+
+Make sure you are on the latest version. Outdated builds are the most common
+cause of crashes after a service update, because the app and server can fall out
+of sync. Check for updates in your app store (mobile) or via Help > Check for
+updates (desktop), install any available update, and relaunch. If a crash began
+right after you updated, note the version number when you report it.
+
+Corrupted local data can cause freezes and slow performance. Clearing the app's
+cache from Settings > Storage > Clear cache is safe and does not delete your
+account content, which lives on the server. As a last resort, uninstall and
+reinstall the app; your data syncs back down after you sign in. On desktop,
+antivirus or firewall software occasionally blocks the app — add an exception if
+crashes coincide with security-software activity.
+
+Performance problems are sometimes connectivity, not the app. A weak or
+intermittent network makes the app appear frozen while it waits on the server;
+switch networks or toggle airplane mode to confirm. If crashes persist after all
+of this, contact support with your app version, device and OS version, and the
+steps that reproduce the crash. If the app can still open, enabling Help > Send
+diagnostic report attaches crash logs that let us pinpoint the cause quickly.

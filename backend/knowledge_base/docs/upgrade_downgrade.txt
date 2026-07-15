@@ -1,10 +1,26 @@
-Title: Upgrading or downgrading your plan
+Title: Changing your subscription plan (upgrade or downgrade)
 
-You can change plans at any time from Billing > Plan. When you upgrade, the new
-features unlock immediately and we charge a prorated amount for the rest of the
-current billing period, so you only pay for the days you use.
+You can change plans at any time from Billing > Plan. WidgetPro offers Free, Pro,
+and Business tiers; higher tiers unlock more features, higher usage limits, and
+faster support response times. A comparison of what each tier includes is shown
+on the plan-selection screen before you confirm.
+
+When you upgrade, the new features unlock immediately. We charge a prorated
+amount for the remainder of the current billing period — you only pay for the
+days left at the higher price — and then the full new price applies from the next
+renewal. Upgrading from monthly to annual switches your renewal date to one year
+out and applies the annual discount right away.
 
 When you downgrade, the change takes effect at the start of your next billing
-period so you keep the higher-tier features you already paid for until then. We
-do not issue partial refunds for downgrades, but the lower price applies to
-every cycle after the switch. Your data is preserved across plan changes.
+period rather than immediately, so you keep the higher-tier features you already
+paid for until then. We do not issue partial refunds for downgrades; instead the
+lower price simply applies to every cycle after the switch. If the lower tier has
+smaller usage limits, make sure your current usage fits before the change takes
+effect.
+
+Your data, settings, and content are always preserved across plan changes in
+either direction. On Business plans, adding or removing seats is also prorated:
+new seats are charged for the remaining days of the period, and removed seats are
+credited toward your next invoice. If a plan change does not appear to have
+applied correctly, check Billing > Invoices to confirm the proration before
+contacting support.

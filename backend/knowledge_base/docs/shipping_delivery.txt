@@ -1,11 +1,24 @@
-Title: Shipping and delivery times
+Title: Shipping and delivery
 
-Physical WidgetPro hardware ships within 2 business days of your order. Standard
-shipping takes 3 to 5 business days within the continental US; express shipping
-takes 1 to 2 business days. International orders take 7 to 14 business days and
-may be subject to customs fees.
+Orders for physical WidgetPro hardware are processed and leave our warehouse
+within 2 business days. Once an order ships you receive a confirmation email with
+a tracking number; you can also see live status any time under Orders > Track
+shipment in your account.
 
-You will receive a tracking number by email once your order leaves our
-warehouse. If your tracking has not updated in more than 5 business days, the
-package may be delayed in transit and you should contact support so we can open
-a carrier investigation or send a replacement.
+Delivery time depends on the method chosen at checkout. Standard shipping takes 3
+to 5 business days within the continental US. Express shipping takes 1 to 2
+business days. International orders take 7 to 14 business days and may be held
+briefly by customs; any import duties or taxes charged by the destination country
+are the recipient's responsibility and are not included in our shipping fee.
+
+If tracking has not updated for more than 5 business days, the package may be
+delayed or lost in transit. Contact support and we will open an investigation
+with the carrier; if the package cannot be located we will send a free
+replacement or issue a refund for the item. Packages marked delivered but not
+received should be reported within 7 days so we can file a claim.
+
+You can change the shipping address only while the order still shows "processing"
+— go to Orders, select the order, and choose "Edit address". Once an order has
+shipped the address is locked and you must arrange redirection with the carrier
+using your tracking number. We are not able to reroute a package that has already
+left the warehouse.

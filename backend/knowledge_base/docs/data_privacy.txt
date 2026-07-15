@@ -1,11 +1,26 @@
 Title: Data privacy and your information
 
-We collect only the data needed to run your account: your email, billing
-details, and the content you choose to store. We do not sell personal data to
-third parties. Our full privacy policy explains each category of data and how
-long it is kept.
+We collect only the data needed to operate your account: your email, billing
+details, and the content you choose to store in the product. We also collect
+basic usage and device information to keep the service secure and reliable. We do
+not sell your personal data to third parties, and we do not use your private
+content to train models. Our full privacy policy lists every category of data,
+why we hold it, and how long we keep it.
 
-You have the right to request a copy of all data we hold about you. Submit a
-data export request from Settings > Privacy > Export my data and we will email a
-downloadable archive within 30 days. To object to specific processing or ask a
-privacy question, contact our data protection team through support.
+You have the right to access and export your data. Submit a request from Settings
+> Privacy > Export my data and we will email a downloadable archive, in a
+machine-readable format, within 30 days — usually much sooner. The export
+includes your profile, settings, and stored content.
+
+You can also request correction or deletion of your data. Deleting your account
+erases your personal data within 30 days, except records we are legally required
+to retain (for example tax and fraud-prevention records). Because deletion is
+irreversible, requests that combine deletion with a refund are reviewed by an
+agent before anything is removed.
+
+We use cookies for sign-in sessions and to remember your preferences; you can
+manage non-essential cookies from the cookie banner or your browser settings. For
+privacy questions, to object to specific processing, or to reach our data
+protection team, contact support and mark the request as a privacy matter and it
+will be routed appropriately. Customers in regions with laws such as GDPR or CCPA
+have these same rights guaranteed under those regulations.

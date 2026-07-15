@@ -1,11 +1,26 @@
 Title: Trouble signing in
 
-If you cannot sign in but your password is correct, your account may be
-temporarily locked after several failed attempts. Locks clear automatically
-after 15 minutes. Waiting and trying again often resolves the problem.
+If your password is correct but you still cannot sign in, your account may be
+temporarily locked after several failed attempts. Locks clear automatically after
+15 minutes — waiting and trying again often resolves it without any further
+action. Repeated failures within that window restart the timer.
 
-Other common causes are an expired session, a browser blocking cookies, or a
-saved autofill password that is out of date. Try clearing your browser cache,
-disabling extensions, or using a private window. If two-factor authentication
-codes are being rejected, check that your device clock is set to automatic, as a
-wrong clock makes time-based codes invalid.
+Many sign-in problems are browser-related rather than account-related. An expired
+session, a browser blocking cookies, or an outdated saved/autofill password are
+the usual causes. Try clearing your browser cache and cookies, disabling
+extensions (ad blockers and privacy tools can interfere with the login flow), or
+signing in from a private/incognito window. If autofill keeps entering an old
+password, delete the saved entry and type it manually.
+
+If your two-factor authentication codes are being rejected, the most common cause
+is a device clock that is out of sync. Set your phone's date and time to
+"automatic", since time-based codes fail when the clock drifts. If you have lost
+your 2FA device entirely, use one of your saved backup codes; if those are gone
+too, contact support for identity verification.
+
+If your organization uses single sign-on (SSO), sign in through your company
+portal rather than with a password — a "user not found" error usually means you
+tried the password form instead of the SSO button. When nothing above works,
+note the exact error message and roughly when it started and contact support; a
+screenshot of the error speeds up diagnosis. For app crashes or freezes rather
+than sign-in errors, see the technical troubleshooting guide.

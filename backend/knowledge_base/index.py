@@ -22,7 +22,7 @@ MAX_CHARS = 400
 OVERLAP = 60
 
 
-MIN_CHARS = 80  # merge shorter fragments (e.g. a lone "Title:" line) forward
+MIN_CHARS = 120  # merge short fragments (lone "Title:" lines, orphan tail clauses)
 
 
 def _chunk(text: str) -> list[str]:
@@ -39,10 +39,33 @@ def _chunk(text: str) -> list[str]:
         if len(para) <= MAX_CHARS:
             chunks.append(para)
         else:
-            start = 0
-            while start < len(para):
-                chunks.append(para[start : start + MAX_CHARS])
-                start += MAX_CHARS - OVERLAP
+            # Window long paragraphs on WORD boundaries (never mid-word), with a
+            # small word-overlap so context isn't lost at the seams.
+            words = para.split()
+            para_chunks: list[str] = []
+            cur: list[str] = []
+            cur_len = 0
+            for w in words:
+                if cur and cur_len + len(w) + 1 > MAX_CHARS:
+                    para_chunks.append(" ".join(cur))
+                    overlap: list[str] = []
+                    ol = 0
+                    for ww in reversed(cur):
+                        if ol + len(ww) + 1 > OVERLAP:
+                            break
+                        overlap.insert(0, ww)
+                        ol += len(ww) + 1
+                    cur, cur_len = overlap[:], ol
+                cur.append(w)
+                cur_len += len(w) + 1
+            if cur:
+                para_chunks.append(" ".join(cur))
+            # Fold a too-short trailing window back into the previous chunk so we
+            # don't leave tiny orphan fragments competing in retrieval.
+            if len(para_chunks) >= 2 and len(para_chunks[-1]) < MIN_CHARS:
+                tail = para_chunks.pop()
+                para_chunks[-1] = para_chunks[-1] + " " + tail
+            chunks.extend(para_chunks)
     if carry:  # trailing fragment: attach to last chunk, or stand alone
         if chunks:
             chunks[-1] = chunks[-1] + "\n" + carry

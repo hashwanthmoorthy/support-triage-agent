@@ -1,11 +1,24 @@
 Title: Cancelling your subscription
 
 You can cancel your subscription at any time from Billing > Plan > Cancel
-subscription. Cancellation stops all future charges but keeps your account
-active until the end of the current billing period, so you do not lose access
-you already paid for.
+subscription. Cancellation stops all future charges immediately, but your paid
+features stay active until the end of the current billing period — you do not
+lose access you have already paid for, and you are not charged again. We send a
+confirmation email as soon as the cancellation is recorded.
 
-Cancelling is different from deleting your account. Cancelling only ends the
-paid plan and moves you to the free tier. If you want your account and personal
-data removed entirely, see the account deletion policy. Cancellations take
-effect immediately and you will receive a confirmation email.
+Cancelling is not the same as deleting your account. Cancelling only ends the
+paid plan and moves you to the free tier at the end of the period, keeping your
+account, data, and settings intact. If you want your account and personal data
+removed entirely, follow the account deletion process instead — note that
+deletion is permanent and requires cancelling any active plan first.
+
+If you cancel by mistake or change your mind, you can reactivate before the
+period ends and nothing changes; if the period has already lapsed, simply
+resubscribe and your data will still be there. Reactivating an annual plan starts
+a new term.
+
+Cancellation on its own does not trigger a refund for the time already paid. If
+you are within the 30-day money-back window and want your money back rather than
+just stopping renewals, request a refund (see the refund policy) in addition to
+cancelling. For annual plans, cancelling stops the next year's charge but the
+current year is not prorated unless you are inside the 30-day window.

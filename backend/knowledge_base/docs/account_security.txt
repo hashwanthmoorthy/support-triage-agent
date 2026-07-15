@@ -1,11 +1,25 @@
-Title: Keeping your account secure
+Title: Account security, 2FA, and suspicious logins
 
-We strongly recommend turning on two-factor authentication (2FA) under Settings >
-Security. With 2FA enabled, signing in requires both your password and a code
-from your authenticator app, so a stolen password alone cannot unlock your
-account.
+We strongly recommend enabling two-factor authentication (2FA) under Settings >
+Security. With 2FA on, signing in requires your password plus a second factor, so
+a stolen password alone cannot unlock your account. You can use an authenticator
+app (recommended) that generates time-based codes, or SMS codes to your phone.
+Authenticator apps are more secure than SMS, which can be intercepted.
 
-If you think your account has been accessed by someone else, change your
-password immediately and sign out of all other sessions from Settings >
-Security > Active sessions. We will never ask for your password or 2FA codes by
-email or phone, so treat any such request as a phishing attempt and report it.
+When you turn on 2FA we show you a set of one-time backup codes. Save these
+somewhere safe and offline — if you lose your phone, a backup code is the fastest
+way back into your account. If you run out of backup codes and no longer have
+your 2FA device, you will need to go through identity verification with support
+to regain access, which takes longer by design.
+
+We monitor for suspicious sign-in activity such as logins from a new device,
+country, or an unusual IP address. When we detect one we email you a security
+alert and may require additional verification before allowing the session. If you
+receive an alert you do not recognize, treat it seriously.
+
+If you believe your account is compromised, act immediately: change your password
+from Settings > Security, then open Active sessions and choose "Sign out of all
+other sessions" to revoke access on every other device. Review your recent
+activity and, if 2FA was not already on, enable it now. Remember we will never
+ask for your password or a 2FA code by email, phone, or chat — any such request
+is phishing and should be reported to support.

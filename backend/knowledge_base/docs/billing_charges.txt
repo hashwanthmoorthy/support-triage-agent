@@ -1,11 +1,25 @@
 Title: Understanding your billing and charges
 
-Your subscription renews automatically on the same day each month or year,
-depending on the plan you chose. The charge appears on your statement as
-"WIDGETPRO SUBSCRIPTION". You can view every past invoice under Billing >
-Invoices in your account.
+Your subscription renews automatically on the same calendar day each cycle —
+monthly or annually, depending on the plan you chose. We attempt the charge on
+the renewal date and, if it succeeds, email you a receipt. Every invoice, paid or
+failed, is available under Billing > Invoices, where you can download a PDF for
+expense reports.
 
-If you see an unexpected charge, first check whether a free trial recently
-ended, since the first paid charge lands the day after the trial. To update the
-card we bill, go to Billing > Payment methods. Failed payments are retried for
-up to 7 days before the subscription is paused.
+On your bank or card statement the charge appears as "WIDGETPRO SUBSCRIPTION"
+followed by the plan name. If you see a charge you do not recognize, the most
+common explanation is that a free trial recently ended: the first paid charge
+lands the day after the trial period closes. The second most common is an annual
+plan renewing a year after signup, which is easy to forget.
+
+To change the card we bill, go to Billing > Payment methods, add the new card,
+and set it as default; the next renewal uses it automatically. If a payment
+fails — for example an expired card or insufficient funds — we retry it several
+times over about 7 days and email you each time. If all retries fail, the
+subscription is paused (not deleted) until you update the payment method, after
+which access is restored immediately.
+
+Prices are shown exclusive of tax where applicable; sales tax or VAT is added at
+checkout based on your billing address, and the tax amount is itemized on every
+invoice. If your organization is tax-exempt, add your exemption or VAT ID under
+Billing > Tax information so future invoices are adjusted.

@@ -1,11 +1,26 @@
 Title: Refund policy
 
-We offer a full refund on any subscription plan within 30 days of the original
-purchase date, no questions asked. To request a refund, contact support with
-your order number and we will process it back to your original payment method
-within 5 to 7 business days.
+We offer a 30-day money-back guarantee on any subscription plan. If you are not
+satisfied, request a refund within 30 days of the original purchase or renewal
+date and we will refund it in full, no questions asked. To request one, contact
+support with your order number or the email on the account; you can also start
+the request from Billing > Invoices by selecting the charge and choosing
+"Request refund".
 
-After 30 days, subscriptions are non-refundable, but you can cancel at any time
-to stop future charges. If you were charged twice for the same billing period,
-that is a duplicate charge and we will always refund the extra amount in full
-once verified, regardless of the 30-day window.
+Approved refunds are returned to your original payment method and typically take
+5 to 7 business days to appear, depending on your bank or card issuer. Refunds
+to prepaid or expired cards may take longer and occasionally require providing an
+alternate method.
+
+After the 30-day window, subscriptions are generally non-refundable, but you can
+cancel at any time to stop future charges and keep access until the end of the
+period you already paid for. Annual plans past 30 days are not prorated for a
+mid-term refund.
+
+Some charges are handled separately from the 30-day rule. Duplicate charges — for
+example being billed twice in the same billing period — are always refunded in
+full once verified, regardless of timing. One-time hardware purchases follow the
+return policy on the shipping page rather than this subscription policy. If you
+opened a dispute or chargeback with your bank, we cannot issue a manual refund
+for the same charge until the dispute is resolved, so please contact us first so
+we can sort it out faster than the bank's process.
