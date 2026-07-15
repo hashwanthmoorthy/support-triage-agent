@@ -75,6 +75,30 @@ def _extract_interrupt(result: dict):
     return getattr(intr, "value", intr)
 
 
+def _extract_sources(result: dict) -> list[dict]:
+    """Pull the KB docs used by knowledge_base_search from the run state.
+
+    Returns [{"source": <doc>, "distance": <float>}], deduped by doc (best
+    distance kept), in retrieval order. Empty when RAG wasn't used.
+    """
+    seen: dict[str, float] = {}
+    order: list[str] = []
+    for entry in result.get("gathered_info", []) or []:
+        if entry.get("tool") != "knowledge_base_search":
+            continue
+        for snip in (entry.get("result", {}) or {}).get("snippets", []):
+            src = snip.get("source")
+            if not src:
+                continue
+            dist = snip.get("distance")
+            if src not in seen:
+                seen[src] = dist
+                order.append(src)
+            elif dist is not None and (seen[src] is None or dist < seen[src]):
+                seen[src] = dist
+    return [{"source": s, "distance": seen[s]} for s in order]
+
+
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
@@ -110,6 +134,7 @@ async def triage(req: TriageRequest) -> dict:
         "reasoning": result.get("reasoning"),
         "final_action": result.get("final_action"),
         "resolution": result.get("resolution"),
+        "sources": _extract_sources(result),
     }
 
 
@@ -138,4 +163,6 @@ async def resume(req: ResumeRequest) -> dict:
         "reasoning": result.get("reasoning"),
         "human_decision": result.get("human_decision"),
         "final_action": result.get("final_action"),
+        "resolution": result.get("resolution"),
+        "sources": _extract_sources(result),
     }
